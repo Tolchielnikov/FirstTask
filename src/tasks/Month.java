@@ -1,14 +1,14 @@
 package tasks;
 
 /**
- * months types that can be used
+ * month name that can be used
  */
 public enum Month {
 
     /**
      * first month
      */
-    JANUARY(31),
+    JANUARY(31, 31),
     /**
      * second month
      */
@@ -17,59 +17,72 @@ public enum Month {
     /**
      * the third month
      */
-    MARCH(31),
+    MARCH(31, 31),
 
     /**
      * fourth month
      */
-    APRIL(30),
+    APRIL(30, 30),
 
     /**
      * fifth month
      */
-    MAY(31),
+    MAY(31, 31),
 
     /**
      * sixth month
      */
-    JUNE(30),
+    JUNE(30, 30),
 
     /**
      * seventh month
      */
-    JULY(31),
+    JULY(31, 31),
 
     /**
      * eighth month
      */
-    AUGUST(31),
+    AUGUST(31, 31),
 
     /**
      * ninth month
      */
-    SEPTEMBER(30),
+    SEPTEMBER(30, 30),
 
     /**
      * tenth month
      * w
      */
-    OCTOBER(31),
+    OCTOBER(31, 31),
 
     /**
      * eleventh month
      */
-    NOVEMBER(30),
+    NOVEMBER(30, 30),
 
     /**
      * twelfth month
      */
-    DECEMBER(31);
+    DECEMBER(31, 31);
 
-    Month(int daysInMonth) {
+    private final int daysInMonth;
+    private final int daysInMonthInLeapYear;
 
+    Month (int daysInMonth, int daysInMonthInLeapYear)
+    {
+        this.daysInMonth = daysInMonth;
+        this.daysInMonthInLeapYear = daysInMonthInLeapYear;
     }
 
-    Month(int daysInMonth, int daysInMonthInLeapYear) {
+    /**
+     * get the number of days in the month in common year
+     * @return number of days in the month
+     */
+    public int getDaysInCommonYear() { return daysInMonth; }
 
-    }
+    /**
+     * get the number of days in the month in leap year
+     * @return number of days in the month
+     */
+    public int getDaysInLeapYear() { return daysInMonthInLeapYear; }
 }

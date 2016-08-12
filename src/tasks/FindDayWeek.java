@@ -1,5 +1,6 @@
 package tasks;
-import static tasks.Month.*;
+
+import static tasks.YearType.*;
 
 /**
  * finds the day of the week using the specified parameters
@@ -8,7 +9,7 @@ import static tasks.Month.*;
 public class FindDayWeek {
 
     /**
-     *  days per week
+     * days per week
      */
     private static final int DAYS_OF_WEEK = 7;
 
@@ -16,17 +17,6 @@ public class FindDayWeek {
      * all days of the week
      */
     private static final String weekdaysName[] = {"вс", "пн", "вт", "ср", "чт", "пт", "сб"};
-
-    /**
-     * the number of days in each month, common year
-     */
-
-//    private static final int allLastDaysOfMonthInCommonYear[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    /**
-     * the number of days in each month, leap year
-     */
-  //  private static final int allLastDaysOfMonthInLeapYear[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     /**
      * calculates the day of the week given the date and day new year
@@ -59,13 +49,9 @@ public class FindDayWeek {
 
         checkDayOfMonth(day, month, year);                  //check days in month
 
-        int allDay=0;       //the number of days elapsed from 01.01 to desired date;
+        int allDay;       //the number of days elapsed from 01.01 to desired date;
 
-        if (year == YearType.LEAP) {
-          //  allDay = getAllDay(month, allLastDaysOfMonthInLeapYear);
-        } else {
-           // allDay = getAllDay(month, allLastDaysOfMonthInCommonYear);
-        }
+        allDay = getAllDay(month, year);
 
         allDay = allDay + day + newYearDay - 1; // in allDay considered first day of year
 
@@ -77,15 +63,22 @@ public class FindDayWeek {
     /**
      * find the number of days elapsed from 01.01 to past months
      *
-     * @param month           month name
-     * @param lastDaysOfMonth array stores all the last days of the month
+     * @param month month name
+     * @param year  year type
      * @return all the past days by month
      */
 
-    private static int getAllDay(Month month, int lastDaysOfMonth[]) {
+    private static int getAllDay(Month month, YearType year) {
         int allDay = 0;
-        for (int i = 0; i < month.ordinal(); i++) {
-            allDay += lastDaysOfMonth[i];
+        if (year == COMMON) {
+            for (int i = 0; i < month.ordinal(); i++) {
+                allDay += Month.values()[i].getDaysInCommonYear();
+            }
+
+        } else {
+            for (int i = 0; i < month.ordinal(); i++) {
+                allDay += Month.values()[i].getDaysInLeapYear();
+            }
         }
         return allDay;
     }
@@ -96,15 +89,14 @@ public class FindDayWeek {
      * @param day   day of month
      * @param month month of year
      * @param year  year type
-     * @return true if all ok and false if day not value
      */
     private static void checkDayOfMonth(int day, Month month, YearType year) {
-        if (year == YearType.COMMON) {
-    //        if (day > month) {
-   //             throw new IllegalArgumentException("Day can be = " + day + " valid value = 1 to " + allLastDaysOfMonthInCommonYear[month.ordinal()]);
+        if (year == COMMON) {
+            if (day > month.getDaysInCommonYear()) {
+                throw new IllegalArgumentException("Day can be = " + day + " valid value = 1 to " + month.getDaysInCommonYear());
             }
-      //  } else if (day > allLastDaysOfMonthInLeapYear[month.ordinal()]) {
- //           throw new IllegalArgumentException("Day can be = " + day + " valid value = 1 to " + allLastDaysOfMonthInCommonYear[month.ordinal()]);
+        } else if (day > month.getDaysInLeapYear()) {
+            throw new IllegalArgumentException("Day can be = " + day + " valid value = 1 to " + month.getDaysInLeapYear());
         }
-  //  }
+    }
 }
